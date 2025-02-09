@@ -8,6 +8,7 @@
 #include "ws2818b.pio.h"
 #include "src/ssd1306.h"
 #include "src/font.h"
+#include "src/numeros.h"
 
 #define I2C_PORT i2c1
 #define I2C_SDA 14
@@ -129,6 +130,125 @@ int getIndex(int x, int y)
     else
     {
         return y * 5 + (4 - x); // Linha ímpar (direita para esquerda).
+    }
+}
+
+// Controla a matriz de leds.
+void led_matrix(int contador) // Recebe um valor numerico.
+{
+    npClear();
+    switch (contador)
+    {
+    case 0:
+        for (int linha = 0; linha < 5; linha++) // Percorre as linhas.
+        {
+            for (int coluna = 0; coluna < 5; coluna++) // Percorre as colunas.
+            {
+                int posicao = getIndex(linha, coluna);                                                                 // Recebe a posição do led.
+                npSetLED(posicao, numero_0[coluna][linha][0], numero_0[coluna][linha][1], numero_0[coluna][linha][2]); // Ativa os led de acordo com a cor especificada.
+            }
+        }
+        npWrite();
+        break;
+    case 1:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_1[coluna][linha][0], numero_1[coluna][linha][1], numero_1[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 2:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_2[coluna][linha][0], numero_2[coluna][linha][1], numero_2[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 3:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_3[coluna][linha][0], numero_3[coluna][linha][1], numero_3[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 4:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_4[coluna][linha][0], numero_4[coluna][linha][1], numero_4[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 5:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_5[coluna][linha][0], numero_5[coluna][linha][1], numero_5[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 6:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_6[coluna][linha][0], numero_6[coluna][linha][1], numero_6[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 7:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_7[coluna][linha][0], numero_7[coluna][linha][1], numero_7[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 8:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_8[coluna][linha][0], numero_8[coluna][linha][1], numero_8[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
+    case 9:
+        for (int linha = 0; linha < 5; linha++)
+        {
+            for (int coluna = 0; coluna < 5; coluna++)
+            {
+                int posicao = getIndex(linha, coluna);
+                npSetLED(posicao, numero_9[coluna][linha][0], numero_9[coluna][linha][1], numero_9[coluna][linha][2]);
+            }
+        }
+        npWrite();
+        break;
     }
 }
 
