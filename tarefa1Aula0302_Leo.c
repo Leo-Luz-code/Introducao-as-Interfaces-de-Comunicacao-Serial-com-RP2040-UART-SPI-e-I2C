@@ -37,10 +37,10 @@ uint32_t current_time;
 static volatile uint a = 1;
 static volatile uint b = 1;
 static volatile uint32_t last_time = 0; // Armazena o tempo do último evento (em microssegundos).
-char apresentar[2];
-char caracter;
-ssd1306_t ssd; // Inicializa a estrutura do display.
-bool cor = true;
+char show[2];                           // Array para armazenar os caracteres de apresentação no display
+char character;                         // Caracter lido
+ssd1306_t ssd;                          // Inicializa a estrutura do display.
+bool color = true;
 
 // Prototipação da função de interrupção.
 static void gpio_irq_handlerA(uint gpio, uint32_t events);
@@ -302,19 +302,47 @@ void init_all_peripherals()
     ssd1306_init(&ssd, WIDTH, HEIGHT, false, ADDRESS, I2C_PORT); // Inicializa o display.
     ssd1306_config(&ssd);                                        // Configura o display.
     ssd1306_send_data(&ssd);                                     // Envia os dados para o display.
+
+    // Função de interrupção.
+    gpio_set_irq_enabled_with_callback(button_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handlerA);
+    gpio_set_irq_enabled(button_B, GPIO_IRQ_EDGE_FALL, true);
 }
 
 int main()
 {
     init_all_peripherals();
 
-    // Função de interrupção.
-    gpio_set_irq_enabled_with_callback(button_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handlerA);
-    gpio_set_irq_enabled(button_B, GPIO_IRQ_EDGE_FALL, true);
-
+    // Loop principal
     while (true)
     {
-        printf("Hello, world!\n");
+        color = !color;
+
+        // Lê o caracter inserido.
+        if (uart_is_readable(UART_ID))
+        {
+            // Lê um caractere da UART.
+            character = uart_getc(UART_ID);
+            show[0] = character; // Guarda o caracter lido.
+            show[1] = '\0';
+
+            // Envia de volta o caractere lido (eco).
+            uart_putc(UART_ID, character);
+
+            // Envia uma mensagem adicional para cada caractere recebido.
+            uart_puts(UART_ID, " <- Eco do RP2\r\n");
+        }
+
+        // Compara para identificar se foi inserido um caraster numérico.
+        if (character >= '0' && character <= '9')
+        {
+            led_matrix(character - '0'); // Converte o caracter em um inteiro e aciona a matriz de led.
+        }
+
+        // Atualiza o conteúdo do display com animações.
+        ssd1306_fill(&ssd, !color);                       // Limpa o display.
+        ssd1306_rect(&ssd, 3, 3, 122, 58, color, !color); // Desenha um retângulo.
+        ssd1306_draw_string(&ssd, show, 60, 30);          // Desenha uma string.
+        ssd1306_send_data(&ssd);                          // Atualiza o display.
         sleep_ms(1000);
     }
 }
@@ -334,18 +362,18 @@ void gpio_irq_handlerA(uint gpio, uint32_t events)
         gpio_put(GREEN_LED, !gpio_get(GREEN_LED)); // Alterna o estado.
         if (gpio_get(GREEN_LED) == false)          // Reconhece o estado do led.
         {
-            uart_puts(UART_ID, " led azul desligado\r\n");
-            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
-            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
-            ssd1306_draw_string(&ssd, "led azul off", 17, 30);
+            uart_puts(UART_ID, " LED Azul desligado\r\n");
+            ssd1306_fill(&ssd, !color);                       // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, color, !color); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "LED Azul off", 17, 30);
             ssd1306_send_data(&ssd); // Atualiza o display.
         }
         else
         {
-            uart_puts(UART_ID, " led azul ligado\r\n");
-            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
-            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
-            ssd1306_draw_string(&ssd, "led azul on", 17, 30);
+            uart_puts(UART_ID, " LED Azul ligado\r\n");
+            ssd1306_fill(&ssd, !color);                       // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, color, !color); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "LED Azul on", 17, 30);
             ssd1306_send_data(&ssd); // Atualiza o display.
         }
         a++; // Incrementa a variavel de verificação
@@ -359,18 +387,18 @@ void gpio_irq_handlerA(uint gpio, uint32_t events)
         gpio_put(BLUE_LED, !gpio_get(BLUE_LED)); // Alterna o estado.
         if (gpio_get(BLUE_LED) == false)         // Reconhece o estado do led.
         {
-            uart_puts(UART_ID, " led verde desligado\r\n");
-            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
-            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
-            ssd1306_draw_string(&ssd, "led verde off", 14, 30);
+            uart_puts(UART_ID, " LED Verde desligado\r\n");
+            ssd1306_fill(&ssd, !color);                       // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, color, !color); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "LED Verde off", 14, 30);
             ssd1306_send_data(&ssd); // Atualiza o display.
         }
         else
         {
-            uart_puts(UART_ID, " led verde ligado\r\n");
-            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
-            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
-            ssd1306_draw_string(&ssd, "led verde on", 14, 30);
+            uart_puts(UART_ID, " LED Verde ligado\r\n");
+            ssd1306_fill(&ssd, !color);                       // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, color, !color); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "LED Verde on", 14, 30);
             ssd1306_send_data(&ssd); // Atualiza o display.
         }
         b++; // Incrementa a variavel de verificação.
