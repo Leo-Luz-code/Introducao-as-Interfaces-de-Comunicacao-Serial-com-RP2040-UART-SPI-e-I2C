@@ -308,9 +308,71 @@ int main()
 {
     init_all_peripherals();
 
+    // Função de interrupção.
+    gpio_set_irq_enabled_with_callback(button_A, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handlerA);
+    gpio_set_irq_enabled(button_B, GPIO_IRQ_EDGE_FALL, true);
+
     while (true)
     {
         printf("Hello, world!\n");
         sleep_ms(1000);
+    }
+}
+
+// Função de interrupção com debouncing.
+void gpio_irq_handlerA(uint gpio, uint32_t events)
+{
+    // Obtém o tempo atual em microssegundos.
+    current_time = to_us_since_boot(get_absolute_time());
+
+    // Verifica se passou tempo suficiente desde o último evento.
+    // Diferencia o botão A do B.
+    if (gpio == button_A && (current_time - last_time > 200000)) // 200 ms de debouncing.
+    {
+        last_time = current_time; // Atualiza o tempo do último evento.
+        printf("Mudanca de Estado do Led. A = %d\n", a);
+        gpio_put(GREEN_LED, !gpio_get(GREEN_LED)); // Alterna o estado.
+        if (gpio_get(GREEN_LED) == false)          // Reconhece o estado do led.
+        {
+            uart_puts(UART_ID, " led azul desligado\r\n");
+            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "led azul off", 17, 30);
+            ssd1306_send_data(&ssd); // Atualiza o display.
+        }
+        else
+        {
+            uart_puts(UART_ID, " led azul ligado\r\n");
+            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "led azul on", 17, 30);
+            ssd1306_send_data(&ssd); // Atualiza o display.
+        }
+        a++; // Incrementa a variavel de verificação
+    }
+
+    // Diferencia o botão A do B.
+    if (gpio == button_B && (current_time - last_time > 200000)) // 200 ms de debouncing.
+    {
+        last_time = current_time; // Atualiza o tempo do último evento.
+        printf("Mudanca de Estado do Led. B = %d\n", b);
+        gpio_put(BLUE_LED, !gpio_get(BLUE_LED)); // Alterna o estado.
+        if (gpio_get(BLUE_LED) == false)         // Reconhece o estado do led.
+        {
+            uart_puts(UART_ID, " led verde desligado\r\n");
+            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "led verde off", 14, 30);
+            ssd1306_send_data(&ssd); // Atualiza o display.
+        }
+        else
+        {
+            uart_puts(UART_ID, " led verde ligado\r\n");
+            ssd1306_fill(&ssd, !cor);                     // Limpa o display.
+            ssd1306_rect(&ssd, 3, 3, 122, 58, cor, !cor); // Desenha um retângulo.
+            ssd1306_draw_string(&ssd, "led verde on", 14, 30);
+            ssd1306_send_data(&ssd); // Atualiza o display.
+        }
+        b++; // Incrementa a variavel de verificação.
     }
 }
