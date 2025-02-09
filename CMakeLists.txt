@@ -1,4 +1,3 @@
-# Generated Cmake Pico project file
 
 cmake_minimum_required(VERSION 3.13)
 
@@ -23,7 +22,7 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico_w CACHE STRING "Board type")
+set(PICO_BOARD pico CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
@@ -35,13 +34,16 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(tarefa1Aula0302_Leo tarefa1Aula0302_Leo.c )
+add_executable(tarefa1Aula0302_Leo tarefa1Aula0302_Leo.c src/ssd1306.c)
 
 pico_set_program_name(tarefa1Aula0302_Leo "tarefa1Aula0302_Leo")
 pico_set_program_version(tarefa1Aula0302_Leo "0.1")
 
+# Generate PIO header
+pico_generate_pio_header(tarefa1Aula0302_Leo ${CMAKE_CURRENT_LIST_DIR}/ws2818b.pio)
+
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(tarefa1Aula0302_Leo 0)
+pico_enable_stdio_uart(tarefa1Aula0302_Leo 1)
 pico_enable_stdio_usb(tarefa1Aula0302_Leo 0)
 
 # Add the standard library to the build
@@ -50,12 +52,15 @@ target_link_libraries(tarefa1Aula0302_Leo
 
 # Add the standard include files to the build
 target_include_directories(tarefa1Aula0302_Leo PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}
+  ${CMAKE_CURRENT_LIST_DIR}
 )
 
 # Add any user requested libraries
-target_link_libraries(tarefa1Aula0302_Leo 
-        
+target_link_libraries(tarefa1Aula0302_Leo
+        hardware_i2c
+        hardware_pio
+        hardware_clocks
+        hardware_timer
         )
 
 pico_add_extra_outputs(tarefa1Aula0302_Leo)
