@@ -252,9 +252,61 @@ void led_matrix(int contador) // Recebe um valor numerico.
     }
 }
 
+// Função de inicialização de todos os periféricos
+void init_all_peripherals()
+{
+    // Inicializa os periféricos para uso de funções c padrão.
+    stdio_init_all();
+
+    // Inicializa a UART.
+    uart_init(UART_ID, BAUD_RATE);
+
+    // Inicializa a I2C com 400Khz.
+    i2c_init(I2C_PORT, 400 * 1000);
+
+    // Configura os pinos GPIO para a UART.
+    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART); // Configura o pino 0 para TX
+    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); // Configura o pino 1 para RX
+
+    // Mensagem inicial.
+    const char *init_message = "UART Demo - RP2\r\n"
+                               "Digite algo e veja o eco:\r\n";
+    uart_puts(UART_ID, init_message);
+
+    // Inicializa os leds.
+    gpio_init(GREEN_LED);
+    gpio_set_dir(GREEN_LED, GPIO_OUT);
+    gpio_init(BLUE_LED);
+    gpio_set_dir(BLUE_LED, GPIO_OUT);
+    gpio_init(RED_LED);
+    gpio_set_dir(RED_LED, GPIO_OUT);
+
+    // Inicializa os botôes.
+    gpio_init(button_A);
+    gpio_set_dir(button_A, GPIO_IN); // Configura o pino como entrada.
+    gpio_pull_up(button_A);          // Habilita o pull-up interno.
+    gpio_init(button_B);
+    gpio_set_dir(button_B, GPIO_IN); // Configura o pino como entrada.
+    gpio_pull_up(button_B);          // Habilita o pull-up interno.
+
+    // Inicializa matriz de LEDs.
+    npInit(LED_PIN);
+    npClear();
+    npWrite(); // Escreve os dados nos LEDs.
+
+    gpio_set_function(I2C_SDA, GPIO_FUNC_I2C); // Configura o pino GPIO para I2C
+    gpio_set_function(I2C_SCL, GPIO_FUNC_I2C); // Configura o pino GPIO para I2C
+    gpio_pull_up(I2C_SDA);                     // Habilita o pull up para os dados
+    gpio_pull_up(I2C_SCL);                     // Habilita o pull up para o clock
+
+    ssd1306_init(&ssd, WIDTH, HEIGHT, false, ADDRESS, I2C_PORT); // Inicializa o display.
+    ssd1306_config(&ssd);                                        // Configura o display.
+    ssd1306_send_data(&ssd);                                     // Envia os dados para o display.
+}
+
 int main()
 {
-    stdio_init_all();
+    init_all_peripherals();
 
     while (true)
     {
