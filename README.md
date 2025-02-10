@@ -69,9 +69,15 @@ Ou acesse diretamente pelo [link do vídeo](https://www.youtube.com/shorts/ImYPL
 │   └── numeros.c
 │   ├── ssd1306.h
 │   └── ssd1306.c
-├── tarefa1Aula0302_Leo.c
+├── .gitignore
+├── CMakeLists.txt
+├── LICENSE
 ├── README.md
-└── LICENSE
+├── diagram.json
+├── pico_sdk_import.cmake
+├── tarefa1Aula0302_Leo.c
+├── wokwi.toml
+└── ws2818b.pio
 ```
 
 ## Licença
