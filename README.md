@@ -57,7 +57,7 @@ Este projeto foi desenvolvido para consolidar conhecimentos sobre o uso de inter
 
 Confira o funcionamento do projeto no vídeo abaixo:
 
-[![Demonstração do Projeto](https://img.youtube.com/vi/ID_DO_VIDEO/maxresdefault.jpg)](https://www.youtube.com/shorts/ImYPL_FY4pU)
+[![Demonstração do Projeto](https://img.youtube.com/vi/ImYPL_FY4pU/maxresdefault.jpg)](https://www.youtube.com/shorts/ImYPL_FY4pU)
 
 Ou acesse diretamente pelo [link do vídeo](https://www.youtube.com/shorts/ImYPL_FY4pU).
 
