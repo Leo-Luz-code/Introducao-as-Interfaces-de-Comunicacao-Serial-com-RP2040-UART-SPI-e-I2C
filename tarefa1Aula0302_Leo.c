@@ -269,8 +269,8 @@ void init_all_peripherals()
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART); // Configura o pino 1 para RX
 
     // Mensagem inicial.
-    const char *init_message = "UART Demo - RP2\r\n"
-                               "Digite algo e veja o eco:\r\n";
+    const char *init_message = "CEPEDI - TIC37\r\n"
+                               "Digite um caractere:\r\n";
     uart_puts(UART_ID, init_message);
 
     // Inicializa os leds.
@@ -329,7 +329,7 @@ int main()
             uart_putc(UART_ID, character);
 
             // Envia uma mensagem adicional para cada caractere recebido.
-            uart_puts(UART_ID, " <- Eco do RP2\r\n");
+            uart_puts(UART_ID, " = Caracter digitado\r\n");
         }
 
         // Compara para identificar se foi inserido um caraster numérico.
@@ -358,7 +358,7 @@ void gpio_irq_handlerA(uint gpio, uint32_t events)
     if (gpio == button_A && (current_time - last_time > 200000)) // 200 ms de debouncing.
     {
         last_time = current_time; // Atualiza o tempo do último evento.
-        printf("Mudanca de Estado do Led. A = %d\n", a);
+        printf("Alterar a cor do LED. A = %d\n", a);
         gpio_put(GREEN_LED, !gpio_get(GREEN_LED)); // Alterna o estado.
         if (gpio_get(GREEN_LED) == false)          // Reconhece o estado do led.
         {
@@ -383,7 +383,7 @@ void gpio_irq_handlerA(uint gpio, uint32_t events)
     if (gpio == button_B && (current_time - last_time > 200000)) // 200 ms de debouncing.
     {
         last_time = current_time; // Atualiza o tempo do último evento.
-        printf("Mudanca de Estado do Led. B = %d\n", b);
+        printf("Alterar a cor do LED. B = %d\n", b);
         gpio_put(BLUE_LED, !gpio_get(BLUE_LED)); // Alterna o estado.
         if (gpio_get(BLUE_LED) == false)         // Reconhece o estado do led.
         {
