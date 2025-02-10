@@ -1,5 +1,13 @@
 # Projeto: Controle de LEDs e Display com Comunicação Serial no RP2040
 
+## Demonstração em Vídeo
+
+Confira o funcionamento do projeto no vídeo abaixo:
+
+[![Demonstração do Projeto](https://img.youtube.com/vi/ImYPL_FY4pU/maxresdefault.jpg)](https://www.youtube.com/shorts/ImYPL_FY4pU)
+
+Ou acesse diretamente pelo [link do vídeo](https://www.youtube.com/shorts/ImYPL_FY4pU).
+
 ## Descrição
 
 Este projeto foi desenvolvido para consolidar conhecimentos sobre o uso de interfaces de comunicação serial em microcontroladores, utilizando a placa de desenvolvimento **BitDogLab** com o microcontrolador **RP2040**. O projeto integra a comunicação via UART e I2C, controle de LEDs comuns e endereçáveis, e a interação com botões utilizando interrupções e debounce.
@@ -52,14 +60,6 @@ Este projeto foi desenvolvido para consolidar conhecimentos sobre o uso de inter
    ```
 2. Compile e envie o código para a placa BitDogLab.
 3. Utilize o Serial Monitor do VS Code para interagir com o projeto.
-
-## Demonstração em Vídeo
-
-Confira o funcionamento do projeto no vídeo abaixo:
-
-[![Demonstração do Projeto](https://img.youtube.com/vi/ImYPL_FY4pU/maxresdefault.jpg)](https://www.youtube.com/shorts/ImYPL_FY4pU)
-
-Ou acesse diretamente pelo [link do vídeo](https://www.youtube.com/shorts/ImYPL_FY4pU).
 
 ## Estrutura do Repositório
 
