@@ -161,7 +161,7 @@
     [ "rgb25:VSS", "gnd5:GND", "black", [ "v27.9", "h8.8" ] ],
     [ "pico:GP7", "rgb5:DIN", "green", [ "h-19.2", "v134.4" ] ],
     [ "rgb26:G", "pico:GP12", "green", [ "v9.6", "h183.7", "v-38.44" ] ],
-    [ "rgb26:B", "pico:GP11", "blue", [ "h164.8", "v-38.4" ] ],
+    [ "rgb26:B", "pico:GP11", "blue", [ "h116.8", "v-38.4" ] ],
     [ "pico:GP13", "rgb26:R", "red", [ "h-28.8", "v38.44", "h-211.2" ] ],
     [ "rgb26:COM", "r1:1", "black", [ "v28.4", "h76.9" ] ],
     [ "oled1:GND", "pico:GND.7", "black", [ "h-48", "v182.4" ] ],
