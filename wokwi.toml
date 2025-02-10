@@ -1,0 +1,7 @@
+[wokwi]
+version = 1
+firmware = 'build/tarefa1Aula0302_Leo.uf2'
+elf = 'build/tarefa1Aula0302_Leo.elf'
+
+[[uart]]
+baud = 115200
